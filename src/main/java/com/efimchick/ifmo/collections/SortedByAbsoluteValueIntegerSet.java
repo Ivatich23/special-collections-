@@ -2,12 +2,37 @@ package com.efimchick.ifmo.collections;
 
 import java.util.*;
 
-class SortedByAbsoluteValueIntegerSet<T> implements Set<T>, Comparator<T> {
+class SortedByAbsoluteValueIntegerSet<T> extends AbstractSet implements Comparator<T> {
     private Object[] array = {};
+    private int position = 0;
 
     public SortedByAbsoluteValueIntegerSet() {
         this.array = new Object[0];
     }
+
+    @Override
+    public Iterator iterator() {
+        return new Iterator() {
+            @Override
+            public boolean hasNext() {
+                return position < array.length;
+            }
+
+            @Override
+            public Object next() {
+                return array[position++];
+            }
+        };
+    }
+
+    public boolean add(Object t) {
+        addSpace();
+        array[array.length - 1] = t;
+        return true;
+
+
+    }
+
 
     @Override
     public int size() {
@@ -35,22 +60,7 @@ class SortedByAbsoluteValueIntegerSet<T> implements Set<T>, Comparator<T> {
         return true;
     }
 
-    @Override
-    public Iterator<T> iterator() {
-        return null;
-    }
-
-    @Override
-    public Object[] toArray() {
-        return new Object[0];
-    }
-
-    @Override
-    public <T1> T1[] toArray(T1[] a) {
-        return null;
-    }
-
-    @Override
+   /* @Override
     public boolean add(T t) {
         addSpace();
         for (int i = 0; i < array.length; i++) {
@@ -62,7 +72,7 @@ class SortedByAbsoluteValueIntegerSet<T> implements Set<T>, Comparator<T> {
             }
         }
         return false;
-    }
+    }*/
 
     @Override
     public boolean remove(Object o) {
@@ -78,26 +88,6 @@ class SortedByAbsoluteValueIntegerSet<T> implements Set<T>, Comparator<T> {
         return true;
     }
 
-
-    @Override
-    public boolean containsAll(Collection<?> c) {
-        return false;
-    }
-
-    @Override
-    public boolean addAll(Collection<? extends T> c) {
-        return false;
-    }
-
-    @Override
-    public boolean retainAll(Collection<?> c) {
-        return false;
-    }
-
-    @Override
-    public boolean removeAll(Collection<?> c) {
-        return false;
-    }
 
     @Override
     public void clear() {
@@ -119,7 +109,7 @@ class SortedByAbsoluteValueIntegerSet<T> implements Set<T>, Comparator<T> {
 
     public void cutSpace() {
         Object[] newArray = new Object[array.length - 1];
-        System.arraycopy(array, 0, newArray, 0, array.length-1);
+        System.arraycopy(array, 0, newArray, 0, array.length - 1);
         array = newArray;
     }
 }

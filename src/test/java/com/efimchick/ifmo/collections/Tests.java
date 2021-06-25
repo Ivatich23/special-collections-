@@ -58,6 +58,7 @@ public class Tests {
         assertEquals(12, list.size());
         assertEquals("b b a a d d c c a a a a", String.join(" ", list));
 
+
         list.set(0, "e");
         list.set(9, "f");
         list.set(6, "g");
