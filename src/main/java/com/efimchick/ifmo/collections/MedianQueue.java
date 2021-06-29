@@ -83,24 +83,14 @@ class MedianQueue<T> extends AbstractQueue {
     @Override
     public T poll() {
         T valueBeforeDel = null;
-    /*    for (int i = 0; i < array.length; i++) {
-            int min = (int) array[i];
-            int pos = i;
-            for (int j = i + 1; j < array.length; j++) {
-                if (min > (int) array[j]) {
-                    min = (Integer) array[j];
-                    pos = j;
-                }
-                T tempValue = (T) array[i];
-                array[i] = array[pos];
-                array[pos] = tempValue;
-            }
 
-        }*/
         Arrays.sort(array);
         if (array.length % 2 != 0) {
             valueBeforeDel = (T) array[array.length / 2];
-            array[array.length / 2] = null;
+            for(int i =array.length;i>=array.length/2-1;i--){
+              array[i]=array[i-1];
+              cutSpace();
+            }
             return valueBeforeDel;
         } else {
             valueBeforeDel = (T) array[array.length / 2 +1 ];
@@ -111,20 +101,7 @@ class MedianQueue<T> extends AbstractQueue {
 
     @Override
     public Object peek() {
-        /*for (int i = 0; i < array.length; i++) {
-            int min = (int) array[i];
-            int pos = i;
-            for (int j = i + 1; j < array.length; j++) {
-                if (min > (int) array[j]) {
-                    min = (Integer) array[j];
-                    pos = j;
-                }
-                T tempValue = (T) array[i];
-                array[i] = array[pos];
-                array[pos] = tempValue;
-            }
 
-        }*/
         Arrays.sort(array);
         if (array.length % 2 != 0) {
             return (T) array[array.length / 2];

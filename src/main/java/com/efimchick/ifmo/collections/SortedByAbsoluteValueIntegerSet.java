@@ -73,25 +73,41 @@ class SortedByAbsoluteValueIntegerSet<T> extends AbstractSet {
         for (int i = 0; i < array.length; i++) {
             if (o.equals(array[i])) {
                 return true;
-            } else {
-                return false;
             }
         }
-        return true;
+        return false;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        if (!super.equals(o)) return false;
+        SortedByAbsoluteValueIntegerSet<?> that = (SortedByAbsoluteValueIntegerSet<?>) o;
+        return position == that.position &&
+                Arrays.equals(array, that.array);
+    }
+
+    @Override
+    public int hashCode() {
+        int result = Objects.hash(super.hashCode(), position);
+        result = 31 * result + Arrays.hashCode(array);
+        return result;
     }
 
     @Override
     public boolean remove(Object o) {
         for (int i = 0; i < array.length; i++) {
             if (o.equals(array[i])) {
-                array[i] = null;
+                for(int j = i;j<array.length-1;j++){
+                    array[j]=array[j+1];
+                }
                 cutSpace();
+                position=0;
                 return true;
-            } else {
-                return false;
             }
         }
-        return true;
+        return false;
     }
 
 
@@ -99,17 +115,6 @@ class SortedByAbsoluteValueIntegerSet<T> extends AbstractSet {
     public void clear() {
     }
 
-
-
-
-
-
-    /*@Override
-    public int compare(T o1, T o2) {
-        int b1 = (int) o1;
-        int b2 = (int) o2;
-        return Integer.valueOf(Math.abs(b1)).compareTo(Integer.valueOf(Math.abs(b2)));
-    }*/
 
     private void addSpace() {
         Object[] newArray = new Object[array.length + 1];
