@@ -38,20 +38,31 @@ class PairStringList<T> extends AbstractList<T> {
         if (index > array.length) {
             throw new IllegalStateException();
         }
-        if(index%2!=0){
-            index+=1;
+        if (index % 2 != 0) {
+            index += 1;
         }
-        if (index != 0) {
-            System.arraycopy(array, index, array, index + 2, array.length - 2 - index);
-        }
+
+        System.arraycopy(array, index, array, index + 2, array.length - 2 - index);
+
 
         array[index] = element;
         array[index + 1] = element;
     }
 
     public void addAll(List al) {
-        Object[] tempArray = new Object[array.length + (al.size() * 2)];
+        for (int i = 0; i < al.size(); i++) {
+            add((T) al.get(i));
+        }
 
+    }
+
+    @Override
+    public boolean addAll(int index, Collection<? extends T> al) {
+
+        for (int i = 0; i < al.size(); i++) {
+            add(index + i * 2, (T) ((List<T>) al).get(i));
+        }
+        return true;
     }
 
     /*@Override
@@ -149,13 +160,13 @@ class PairStringList<T> extends AbstractList<T> {
     @Override
     public T set(int index, T element) {
         T oldValue = null;
-        if (index < array.length - 1) {
-            oldValue = (T) array[index];
-            array[index] = element;
-            array[index + 1] = element;
-        } else {
-            throw new IndexOutOfBoundsException();
+        if (index % 2 != 0) {
+            index -= 1;
         }
+        oldValue = (T) array[index];
+        array[index] = element;
+        array[index + 1] = element;
+
         return oldValue;
     }
 

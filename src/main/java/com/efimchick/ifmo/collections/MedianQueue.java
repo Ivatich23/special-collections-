@@ -1,12 +1,8 @@
 package com.efimchick.ifmo.collections;
 
-import java.lang.reflect.Array;
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.Iterator;
-import java.util.Queue;
+import java.util.*;
 
-class MedianQueue<T> implements Queue<T> {
+class MedianQueue<T> extends AbstractQueue {
     Object[] array;
     int position = 0;
 
@@ -21,7 +17,7 @@ class MedianQueue<T> implements Queue<T> {
 
     @Override
     public boolean isEmpty() {
-        if (array[array.length] != null) {
+        if (array[array.length - 1] != null) {
             return true;
         } else {
             return false;
@@ -43,7 +39,17 @@ class MedianQueue<T> implements Queue<T> {
 
     @Override
     public Iterator<T> iterator() {
-        return null;
+        return new Iterator() {
+            @Override
+            public boolean hasNext() {
+                return position < array.length;
+            }
+
+            @Override
+            public Object next() {
+                return array[position++];
+            }
+        };
     }
 
     @Override
@@ -51,18 +57,6 @@ class MedianQueue<T> implements Queue<T> {
         return new Object[array.length];
     }
 
-    @Override
-    public <T1> T1[] toArray(T1[] a) {
-        return null;
-    }
-
-    @Override
-    public boolean add(T t) {
-        addSpace();
-        array[position] = t;
-        position++;
-        return true;
-    }
 
     @Override
     public boolean remove(Object o) {
@@ -78,70 +72,67 @@ class MedianQueue<T> implements Queue<T> {
         return false;
     }
 
-    @Override
-    public boolean containsAll(Collection<?> c) {
-        return false;
-    }
 
     @Override
-    public boolean addAll(Collection<? extends T> c) {
-        return false;
-    }
-
-    @Override
-    public boolean removeAll(Collection<?> c) {
-        return false;
-    }
-
-    @Override
-    public boolean retainAll(Collection<?> c) {
-        return false;
-    }
-
-    @Override
-    public void clear() {
-
-    }
-
-    @Override
-    public boolean offer(T t) {
-        return false;
-    }
-
-    @Override
-    public T remove() {
-        return null;
+    public boolean offer(Object o) {
+        addSpace();
+        array[array.length - 1] = o;
+        return true;
     }
 
     @Override
     public T poll() {
-        for (int i = 0; i < array.length; i++) {
+        T valueBeforeDel = null;
+    /*    for (int i = 0; i < array.length; i++) {
             int min = (int) array[i];
             int pos = i;
             for (int j = i + 1; j < array.length; j++) {
-                if (min >  (int)array[j]){
-                    min = (Integer)array[j];
+                if (min > (int) array[j]) {
+                    min = (Integer) array[j];
                     pos = j;
                 }
                 T tempValue = (T) array[i];
-                array[i]=array[pos];
-                array[pos]=tempValue;
+                array[i] = array[pos];
+                array[pos] = tempValue;
             }
 
+        }*/
+        Arrays.sort(array);
+        if (array.length % 2 != 0) {
+            valueBeforeDel = (T) array[array.length / 2];
+            array[array.length / 2] = null;
+            return valueBeforeDel;
+        } else {
+            valueBeforeDel = (T) array[array.length / 2 +1 ];
+            array[array.length / 2 + 1] = null;
+            return valueBeforeDel;
         }
-        return (T) array[array.length/2];
-    }
-
-
-    @Override
-    public T element() {
-        return null;
     }
 
     @Override
-    public T peek() {
-        return null;
+    public Object peek() {
+        /*for (int i = 0; i < array.length; i++) {
+            int min = (int) array[i];
+            int pos = i;
+            for (int j = i + 1; j < array.length; j++) {
+                if (min > (int) array[j]) {
+                    min = (Integer) array[j];
+                    pos = j;
+                }
+                T tempValue = (T) array[i];
+                array[i] = array[pos];
+                array[pos] = tempValue;
+            }
+
+        }*/
+        Arrays.sort(array);
+        if (array.length % 2 != 0) {
+            return (T) array[array.length / 2];
+        } else {
+            return (T) array[array.length / 2 - 1];
+        }
     }
+
 
     private void addSpace() {
         Object[] newArray = new Object[array.length + 1];
