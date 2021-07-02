@@ -87,14 +87,20 @@ class MedianQueue<T> extends AbstractQueue {
         Arrays.sort(array);
         if (array.length % 2 != 0) {
             valueBeforeDel = (T) array[array.length / 2];
-            for(int i =array.length;i>=array.length/2-1;i--){
-              array[i]=array[i-1];
-              cutSpace();
+            for (int i = array.length / 2; i < array.length - 1; i++) {
+                array[i] = array[i + 1];
             }
+            cutSpace();
+            position = 0;
             return valueBeforeDel;
         } else {
-            valueBeforeDel = (T) array[array.length / 2 +1 ];
-            array[array.length / 2 + 1] = null;
+
+            valueBeforeDel = (T) array[array.length / 2 - 1];
+            for (int i = array.length / 2 - 1; i < array.length - 1; i++) {
+                array[i] = array[i + 1];
+            }
+            cutSpace();
+            position = 0;
             return valueBeforeDel;
         }
     }
